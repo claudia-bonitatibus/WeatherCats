@@ -4,19 +4,63 @@ const selected = ref('')
 </script>
 
 <template>
-  <h1>What Should I Wear Today?</h1>
-  <h3 style="margin-top: 2rem;">Zipcode: <input class="textArea" type="text" required></h3>
-  <h3 style="margin-top: 2rem;">How do cats wear pants? {{ selected }}</h3>
-  <div style="margin-top: 1rem;">
-    <input type="radio" id="one" value="On two legs" v-model="selected" />
-    <label style="padding-left: .5rem;" for="one">On two legs</label>
-  </div>
-  <div style="margin-top: 1rem;">
-    <input type="radio" id="two" value="On four legs" v-model="selected" />
-    <label style="padding-left: .5rem;" for="two">On four legs</label>
-  </div>
-  <button class="button" type="submit">Generate Today's Outfit</button>
+    <div class="card">
+        <h2>What Should I Wear Today?</h2>
+        <h3 style="margin-top: 2rem;">Zipcode: <input class="textArea" type="text" v-model="locationSearch" required></h3>
+        <h3 style="margin-top: 2rem;">How do cats wear pants? {{ selected }}</h3>
+        <div class="radioItem">
+            <input type="radio" id="one" value="On two legs" v-model="selected" />
+            <label style="padding-left: .5rem;" for="one">On two legs</label>
+        </div>
+        <div class="radioItem">
+            <input type="radio" id="two" value="On four legs" v-model="selected" />
+            <label style="padding-left: .5rem;" for="two">On four legs</label>
+        </div>
+        <div>
+            <button class="button" type="submit" @click="getLocation">Generate Today's Outfit</button>
+        </div>
+    </div>
 </template>
+
+<script>
+
+    const getLocation = async(locationSearch) =>{
+        const params = new URLSearchParams();
+        params.set('apikey', 'jJlZPD0e9RaOlm5d9q1uACVBv3xZGxBC');
+        params.set('q', locationSearch);
+        const response = await fetch(`http://dataservice.accuweather.com/locations/v1/search?${params}`,{
+            method:"GET",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP Error Status: ${response.status} /n make sure you entered a valid zipcode`);
+        }
+
+        const locationResponse = await response.json();
+        return locationResponse; 
+    };
+  
+    const getWeather = async() =>{
+        const params = new URLSearchParams();
+        params.set('apikey', 'jJlZPD0e9RaOlm5d9q1uACVBv3xZGxBC');
+        params.set('locationKey', locationResponse.Key);
+        const response = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/1day/{locationResponse.Key}`,{
+            method:"GET",
+            headers: {
+            'Content-Type': 'application/json'
+            },
+        })
+        const weatherResponse = await response.json();
+        return weatherResponse;
+    };
+    const cacheWeatherData = () => {
+        localStorage.setItem("Weather",weatherResponse);
+    }
+    getLocation('19103')
+</script>
 
 <style scoped>
 </style>

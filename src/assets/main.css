@@ -6,22 +6,50 @@
   padding: 3rem;
   font-weight: normal;
   text-align: center;
+  justify-items: center; 
+}
+
+.card{
+  background-color: #fafafa;
+  padding: 2rem 6rem;
+  border:2px solid #eeeeee;
+  border-radius: 5px;
+  max-width: 100%;
 }
 
 .textArea{
   border: none;
-  border-bottom: 2px solid #d5d5d5;
+  background: none;
+  border-bottom: 2px solid #d7d7d7;
   font-size: 15px;
   max-width: 5rem;
   text-align: center;
 }
+.textArea:focus{
+  outline: none;
+  border-bottom: 2px solid #c5c5c5;
+}
+
+.radioItem{
+  margin-top: 1rem;
+  padding: .5rem 1.5rem;
+  display: inline-flex;
+}
+
 .button {
   margin-top: 2rem;
-  padding: 1rem 2rem 1rem 2rem;
+  padding: .75rem 1rem .75rem 1rem;
   border:0px;
   border-radius: 30px;
   color: #ffffff;
   background:#26a76d;
   font-size: 15px;
   font-weight: bold;
+}
+
+.button:hover {
+  background:#239b65;
+}
+.button:active {
+  background:#22ca7e;
 }
