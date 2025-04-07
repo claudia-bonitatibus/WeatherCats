@@ -26,9 +26,12 @@ const selected = ref('')
 
     const getLocation = async(locationSearch) =>{
         const params = new URLSearchParams();
-        params.set('apikey', 'jJlZPD0e9RaOlm5d9q1uACVBv3xZGxBC');
-        params.set('q', locationSearch);
-        const response = await fetch(`http://dataservice.accuweather.com/locations/v1/search?${params}`,{
+        params.set('name', locationSearch);
+        params.set('count', 1);
+        params.set('format', 'json');
+        params.set('countryCode', 'US');
+
+        const response = await fetch(`http://localhost:3000/v1/search?${params}`,{
             method:"GET",
             headers: {
                 'Content-Type': 'application/json'
@@ -36,18 +39,18 @@ const selected = ref('')
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP Error Status: ${response.status} /n make sure you entered a valid zipcode`);
+            throw new Error(`HTTP Error Status: ${response.status} make sure you entered a valid zipcode`);
         }
 
         const locationResponse = await response.json();
         return locationResponse; 
     };
   
-    const getWeather = async() =>{
+    const getWeather = async(latitude, longitude) =>{
         const params = new URLSearchParams();
-        params.set('apikey', 'jJlZPD0e9RaOlm5d9q1uACVBv3xZGxBC');
-        params.set('locationKey', locationResponse.Key);
-        const response = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/1day/{locationResponse.Key}`,{
+        params.set('latitude', latitude);
+        params.set('longitude', longitude);
+        const response = await fetch(`http://localhost:3000/v1/forecast?${params}`,{
             method:"GET",
             headers: {
             'Content-Type': 'application/json'
@@ -56,10 +59,14 @@ const selected = ref('')
         const weatherResponse = await response.json();
         return weatherResponse;
     };
-    const cacheWeatherData = () => {
-        localStorage.setItem("Weather",weatherResponse);
-    }
+
     getLocation('19103')
+    .then(res=>{
+       const latitude = res.results[0].latitude
+       const longitude = res.results[0].longitude
+       return getWeather(latitude,longitude)
+    })
+    .then(console.log) 
 </script>
 
 <style scoped>
