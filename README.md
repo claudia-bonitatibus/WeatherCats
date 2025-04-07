@@ -22,6 +22,11 @@ npm install
 npm run dev
 ```
 
+### Run Proxy API in a separate terminal to work around CORS issues
+```sh
+npm run proxy
+```
+
 ### Compile and Minify for Production
 
 ```sh
