@@ -6,15 +6,15 @@
   padding: 3rem;
   font-weight: normal;
   text-align: center;
-  justify-items: center; 
+  justify-items: center;
 }
 
 .card{
-  background-color: #fafafa;
-  padding: 2rem 6rem;
+  background-color: #fcfcfc;
+  padding: 3rem 6rem;
   border:2px solid #eeeeee;
   border-radius: 5px;
-  max-width: 100%;
+  min-width: 50vw;
 }
 
 .textArea{
@@ -53,6 +53,26 @@
 }
 
 .button:active {
+  background:#22ca7e;
+}
+
+.button-empty{
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  margin-top: 2rem;
+  padding: .5rem;
+  border:0;
+  border-radius: 40px;
+  background: #26a76d;
+  font-weight: bold;
+}
+
+.button-empty:hover{
+  background:#239b65;
+}
+
+.button-empty:active{
   background:#22ca7e;
 }
 

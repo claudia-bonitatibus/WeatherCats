@@ -1,5 +1,6 @@
 <script setup>
     import {computed} from 'vue';
+    import { state } from '../state'
 
     //Determine what text and image is displayed using temperature and precipitation data from the weather API calls 
     //and the radio button selection
@@ -30,7 +31,7 @@
             }
             outfitDescription = `It's very warm today. Dress lightly and don't forget your sunscreen.`;
         }
-        else if ((temperature < 68 && temperature > 50)){
+        else if ((temperature < 70 && temperature >= 50)){
             if(selected == 'On two legs'){
                 outfitImage = 'cool_01.svg';
             }
@@ -54,11 +55,18 @@
     const outfitComputed = computed(() => {
         return displayOutfit(props);
     })
+
+    //Reset precipitation and temperature values to null to return to entry form
+    const handleSubmit = () => {
+        state.precipitation = null;
+        state.temperature = null;
+        console.log(state.temperature);
+    }
 </script>
 
 <template>
     <!-- dynamically display content using outfitImage and outfitDescription -->
-    <div>
+    <form @submit.prevent="handleSubmit">
         <div>
             <img
                 style="max-width: 25rem; min-width: 15rem; max-height: 18rem; margin: 2rem;"
@@ -66,10 +74,16 @@
             />
         </div>
         <div class="weather-container">
-            <h1>{{ temperature+"°" }}</h1>
-            <h3 style="max-width: 20rem; padding-left: 2rem;">{{ outfitComputed.outfitDescription }}</h3>
+            <h1 style="font-weight: 200;">{{ temperature+"°" }}</h1>
+            <h3 style="max-width: 20rem; padding-left: 1.5rem;">{{ outfitComputed.outfitDescription }}</h3>
         </div>
-    </div>
+    
+        <div>
+            <button type="submit" class="button-empty">
+                <img src="../assets/svgs/back_arrow.svg"/>
+            </button>
+        </div>
+    </form>
 </template>
 
 <style scoped>

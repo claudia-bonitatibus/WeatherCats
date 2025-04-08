@@ -5,8 +5,8 @@ import { state } from './state';
 </script>
 
 <template>
-  <FormComponent/>
-  <ImageViewComponent :precipitation="state.precipitation" :temperature="state.temperature" :selected="state.selected"/>
+  <FormComponent v-show=!state.showOutfit() />
+  <ImageViewComponent v-show=state.showOutfit() :precipitation="state.precipitation" :temperature="state.temperature" :selected="state.selected" />
 </template>
 
 <style scoped>
