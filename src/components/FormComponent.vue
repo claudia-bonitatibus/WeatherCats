@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue'
+import { state } from '../state'
 
+//Call the geocode API to get the location data that corresponds to the zip code entered in the text area
 const getLocation = async(locationSearch) =>{
     const params = new URLSearchParams();
     params.set('name', locationSearch);
@@ -17,9 +19,10 @@ const getLocation = async(locationSearch) =>{
         throw new Error(`HTTP Error Status: ${response.status} make sure you entered a valid zipcode`);
     }
     const locationResponse = await response.json();
-    return locationResponse; 
+    return locationResponse;
 };
 
+//Call the weather API using the latitude and longitude recieved from the geocode API call
 const getWeather = async(latitude, longitude) =>{
     const params = new URLSearchParams();
     params.set('latitude', latitude);
@@ -35,24 +38,23 @@ const getWeather = async(latitude, longitude) =>{
     const weatherResponse = await response.json();
     return weatherResponse;
 };
-
-const displayWeather = () => {
-    getLocation(locationSearch.value)
-    .then(res=>{
-        const latitude = res.results[0].latitude
-        const longitude = res.results[0].longitude
-        return getWeather(latitude,longitude)
-    })
-    .then(console.log) 
-}
 const selected = ref('On two legs')
 const locationSearch = ref('')
+const handleSubmit = async() => {
+    const res = await getLocation(locationSearch.value); 
+    const latitude = res.results[0].latitude;
+    const longitude = res.results[0].longitude;
+    const weather = await getWeather(latitude,longitude);
+    state.precipitation = weather.current.precipitation;
+    state.temperature = weather.current.temperature_2m;
+    state.selected = selected.value;
+}
 </script>
 
 <template>
-    <div class="card">
+    <form  @submit.prevent="handleSubmit" class="card">
         <h2>What Should I Wear Today?</h2>
-        <h3 style="margin-top: 2rem;">Zipcode: <input class="textArea" type="text" v-model="locationSearch" required></h3>
+        <h3 style="margin-top: 2rem;">ZIP Code: <input class="textArea" type="text" v-model="locationSearch" required></h3>
         <h3 style="margin-top: 2rem;">How do cats wear pants? {{ selected }}</h3>
         <div class="radioItem">
             <input type="radio" id="one" value="On two legs" v-model="selected" />
@@ -63,11 +65,9 @@ const locationSearch = ref('')
             <label style="padding-left: .5rem;" for="two">On four legs</label>
         </div>
         <div>
-            <button class="button" type="submit" @click="displayWeather">Generate Today's Outfit</button>
+            <button class="button" type="submit">Generate Today's Outfit</button>
         </div>
-    </div>
+    </form>
 </template>
-
-
 <style scoped>
 </style>
