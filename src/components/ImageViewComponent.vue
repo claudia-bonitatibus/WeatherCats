@@ -22,7 +22,7 @@
             }
             outfitDescription = `It's raining outside. Make sure to wear a raincoat or bring an umbrella.`;
         }
-        else if (temperature >= 70){
+        else if (temperature >= 65){
             if(selected == 'On two legs'){
                 outfitImage = 'warm_01.svg';
             }
@@ -31,7 +31,7 @@
             }
             outfitDescription = `It's very warm today. Dress lightly and don't forget your sunscreen.`;
         }
-        else if ((temperature < 70 && temperature >= 50)){
+        else if ((temperature < 65 && temperature >= 50)){
             if(selected == 'On two legs'){
                 outfitImage = 'cool_01.svg';
             }
