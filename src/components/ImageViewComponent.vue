@@ -49,7 +49,6 @@
             }
             outfitDescription = `It's cold today. Make sure you bundle up in a jacket and some cozy mittens. Add a pop of color for extra warmth.`;
         }
-        console.log(temperature);
         return {outfitImage, outfitDescription};
     }
     const outfitComputed = computed(() => {
@@ -60,7 +59,6 @@
     const handleSubmit = () => {
         state.precipitation = null;
         state.temperature = null;
-        console.log(state.temperature);
     }
 </script>
 
